@@ -1,0 +1,1 @@
+CREATE TABLE kullanıcılar (ad TEXT,soyad TEXT,nick TEXT,mail TEXT,sifre TEXT,cinsiyet TEXT,chatRoomKey TEXT)
