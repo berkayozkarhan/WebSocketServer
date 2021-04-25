@@ -5,23 +5,12 @@ from objects.Client import Client
 import datetime
 import asyncio
 
-
-#Geliştiriciye öneri:Mesajları her zaman oluşturduğum MyMessage classını referans alarak gönder.
-#Çünkü C# tarafında da aynı niteliklere sahip class var.aksi halde json parse işleminde sıkıntı oluyor.
-#-Berkay Özkarhan
-
-
-#The set of clients connected to this server.It is used to distribute messages
-
-
 @asyncio.coroutine
 async def client_handler(websocket,path):
-    #_server = Client("server",1, "online", True,websocket)
     print("New Client ",websocket)
     print('({} existing clients)'.format(len(clients)))
-    #İstemciden gelen ilk data ismi olarak belirlendi.
-    first_data = await websocket.recv() #ilk mesajın geleceği yer istemcideki FirstMessage sınıfı
-    first_data_json = json.loads(first_data) #JSON verisi-->Python verisi
+    first_data = await websocket.recv()
+    first_data_json = json.loads(first_data)
     if(first_data_json['message_type'] == "sign-up"):
         #print("{}".format(first_data))
         new_user_Data = first_data_json['message'].split(",")
