@@ -21,8 +21,6 @@ async def start_chat(websocket,name):
     await sayClientWelcome(websocket, name)
 
     _client = Client(name, "{}".format(GenerateUniqueID()), "online", True, websocket)
-    # İstemciden gelen mesajlar yönlendirilirken user_ID değerine göre soket nesnesi
-    # seçilip yönlendirilecek
     activeClientsList.append(_client)
     clients[websocket] = {"name": name, "user_ID": _client.userID}
     clientsNotification.append({"username": name, "user_ID": "{}".format(_client.userID), "status": _client.status})
@@ -40,12 +38,10 @@ async def start_chat(websocket,name):
                              websocket)  # Odada bulunan kullanıcıların sayısı(Keyfi bir bildirim,olmasa da olur.)
     print("Connection added:{}".format(clients[websocket]))
     print("--------------------------------------------")
-    #logging.info('Clients:{}'.format(activeClientsList))
     showClients(clients)
     print("--------------------------------------------")
     await notify_New_User(activeClientsList, _client)
     await sendLastData(websocket, name, "group_message")
-    # Handle messages from this client
     while True:
         incoming_data = await websocket.recv()  # Mesajlaşmanın başladığı yer.
         incoming_data_json = json.loads(incoming_data)  # C#'tan gelen Message sınıfı parse ediliyor.
@@ -225,7 +221,6 @@ async def notify_New_User(activeClientsList,_client):
                       datetime.datetime.utcnow().isoformat() + "Z")
         notificationConnected_JSON = json.loads(json.dumps(notificationConnected.__dict__))
         await client.relatedSocket.send("{}".format(notificationConnected_JSON))
-        #await client.send(name + ' has joined the chat')
 
 
 
